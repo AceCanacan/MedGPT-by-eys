@@ -13,33 +13,58 @@ const CustomButton = ({ title, onPress, style }) => {
 };
 
 const InputPage = ({ navigation }) => {
-  const [context, setContext] = useState('');
-  const [expectations, setExpectations] = useState('');
+  const [symptoms, setSymptoms] = useState('');
+  const [duration, setDuration] = useState('');
+  const [patterns, setPatterns] = useState('');
+  const [medications, setMedications] = useState('');
 
   const handleSubmit = () => {
-    navigation.navigate('ChatPage', { context, expectations });
+    navigation.navigate('ChatPage', { 
+      symptoms, 
+      duration, 
+      patterns, 
+      medications 
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Context:</Text>
+      <Text style={styles.label}>Symptoms:</Text>
       <TextInput 
         style={styles.inputBox}
         multiline
-        scrollEnabled
-        value={context}
-        onChangeText={setContext}
-        placeholder="Describe the context of your conversation."
+        value={symptoms}
+        onChangeText={setSymptoms}
+        placeholder="Describe in detail the primary symptom that is concerning you."
       />
-      <Text style={styles.label}>Expectations:</Text>
+
+      <Text style={styles.label}>Duration:</Text>
       <TextInput 
         style={styles.inputBox}
         multiline
-        scrollEnabled
-        value={expectations}
-        onChangeText={setExpectations}
-        placeholder="What do you expect from this conversation?"
+        value={duration}
+        onChangeText={setDuration}
+        placeholder="How long have you been experiencing this symptom?"
       />
+
+      <Text style={styles.label}>Patterns:</Text>
+      <TextInput 
+        style={styles.inputBox}
+        multiline
+        value={patterns}
+        onChangeText={setPatterns}
+        placeholder="Have you noticed any patterns or triggers related to your symptoms?"
+      />
+
+      <Text style={styles.label}>Medications:</Text>
+      <TextInput 
+        style={styles.inputBox}
+        multiline
+        value={medications}
+        onChangeText={setMedications}
+        placeholder="Have you tried any treatments or taken any new medications recently, and if so, did they affect your symptom?"
+      />
+
       <View style={styles.centeredContainer}>
         <CustomButton
           title="SUBMIT"
@@ -47,15 +72,15 @@ const InputPage = ({ navigation }) => {
           style={styles.submitButton}
         />
       </View>
-      
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: screenHeight * 0.01,
     alignItems: 'center', // This centers the children horizontally
     justifyContent: 'center', // This centers the children vertically
   },
@@ -70,7 +95,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: '100%', // Ensure it takes the full width
-    height: screenHeight * 0.18,
+    height: screenHeight * 0.10,
     backgroundColor: 'white',
     borderRadius: screenHeight * 0.01,
     paddingHorizontal: screenWidth * 0.04,
@@ -87,7 +112,7 @@ const styles = StyleSheet.create({
     elevation: screenHeight * 0.002,
   },
   buttonContainer: {
-    backgroundColor: '#27ae60',
+    backgroundColor: '#0984e3',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,

@@ -10,6 +10,8 @@ import {
 import axios from 'axios';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Share from 'expo-sharing';
+
 
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 const API_KEY = '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';
@@ -30,8 +32,6 @@ export const saveSummaryToStorage = async (summaryObj) => {
   }
 };
 
-
-
 const OutputPage = ({ route }) => {
   const { messages } = route.params;
   const [summary, setSummary] = React.useState({date: '', content: ''});
@@ -49,7 +49,23 @@ const OutputPage = ({ route }) => {
           model: 'gpt-3.5-turbo',
           messages: [...userMessages, {
             role: 'user',
-            content: "Given the following information, please produce a journal entry by the author. It's vital that you don't omit any details. Please present your findings in a third person point of view. Despite the need for objectivity, ensure your write-up embodies compassion, as if it was composed for a personal journal entry. And be concise dont make it too long. Make sure it sounds similar to the input of the writer",
+            content: `You are an empathetic, AI-powered assistant, designed to provide support in a medical context. Your user is a patient who has already provided detailed information about their health concerns. Your task is to analyze this information from a medical perspective and provide a summary of the possible condition they might be experiencing, potential causes, and general advice on symptom management.
+
+            For example, if the patient has described symptoms of diarrhea, you might suggest that they could be experiencing food poisoning, which can be caused by consuming contaminated food or water. You could then provide general advice such as staying hydrated and resting.
+
+            Remember, your role is purely informational, and under no circumstances should you attempt to provide medical advice or diagnosis. Always take into account the context provided by the patient and ensure your responses are both medically accurate and understandable to a layperson.
+
+            After providing the summary, remind the patient that this is an AI-generated response and it's crucial for them to consult with a healthcare professional who can provide advice based on a comprehensive understanding of their symptoms and medical history
+
+            Do not show any signs of uncertainty such as "i cannot pinpoint the exact cause". The patient knows you are a bot, and knows that you have limitations. No need to tell them.
+
+            Separate per part
+            - Summary of Symptoms
+            (explain what measures can they take to alleviaet their problem)
+            - Possible Diagnosis
+            (talk about the probable disease or condition they have)
+            - Potentaial Causes
+            (explain the potential cause of their condition)`,
           }],
         }, {
           headers: {
@@ -77,7 +93,7 @@ const OutputPage = ({ route }) => {
   }, [messages]);
 
   return (
-      <View style={styles.container}>
+    <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color="#1abc9c" />
       ) : (

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -25,19 +25,40 @@ const ChatPage = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = React.useState('');
   const scrollViewRef = useRef(null);
-  const context = route.params.context; 
+
+  const { symptoms, duration, patterns, medications } = route.params;
+
 
   const setParentMessages = route.params.setMessages;
   const [messages, setMessages] = useState(route.params.messages || []);
 
+  
+  const sendBotMessage = (content) => {
+    const botMessage = { role: 'assistant', content: content };
+    setMessages(prevMessages => [...prevMessages, botMessage]);
+  };
 
   const sendMessage = async () => {
   setLoading(true);
   const userMessage = { role: 'user', content: userInput };
   const systemMessage = {
-    role: 'system',
-    content: "You are a seasoned guidance counselor with a unique ability to perfectly comprehend the thoughts and emotions of the individuals seeking your services. Your approach combines empathy, assurance, and introspective techniques, including asking carefully crafted follow-up questions to help people understand themselves better. With a background in psychotherapy, you don’t only provide support in layman’s terms but also include technical and logical context to help your clients grasp what they’re going through. This method has proven highly effective in assisting those who come to you for guidance. When someone approaches you with a question or concern, your response always begins with an affirmation to make them feel understood, followed by a thought-provoking follow-up question that guides them deeper into self-awareness and discovery."
+    role: 'assistant',
+    content: `Symptoms: ${symptoms}. Duration of symptoms: ${duration} Patterns of symptoms: ${patterns} Symptoms: ${medications}}
+    This is the context about the patient
+    You are a highly empathetic, AI-powered assistant, providing support in a medical context.
+    Your user is a patient who has answered the following questions about their health concerns:
+    Your task is not to diagnose or analyze the patient's condition. Instead, you are to use the information provided to ask follow-up questions,
+    aimed at gathering more details and understanding the patient's situation better. Probe into different areas of their lifestyle, such as diet,
+    exercise, stress levels, and sleep patterns, which might be relevant to their symptoms. It's important to remain respectful, empathetic,
+    and understanding in your tone throughout the conversation, making the patient feel heard and acknowledged.
+    After a thorough conversation, when you think you have gathered enough information, you should inform the patient that
+    you've completed your questions and the data will be reviewed by medical professionals for further analysis.
+    Remember, your role is purely informational, and under no circumstances should you attempt to provide medical advice or diagnosis.
+    Take into account the context provided by the patient
+    ASK ONE QUESTION AT A TIME. DO NOT OVERWHELM THE PATIENT.
+    `,
   };
+
 
   try {
     const response = await axios.post(API_URL, {
@@ -69,7 +90,9 @@ const ChatPage = ({ route, navigation }) => {
   setLoading(false);
 };
 
-
+useEffect(() => {
+  sendBotMessage("Hello! How are you feeling today?");
+}, []);
 
   const isSendDisabled = loading || !userInput.trim();
 
@@ -107,14 +130,15 @@ const ChatPage = ({ route, navigation }) => {
         />
         <TouchableOpacity disabled={isSendDisabled} onPress={sendMessage}>
             {loading ? (
-                <ActivityIndicator size="small" color="#1abc9c" />
+                <ActivityIndicator size="small" color="#0984e3" />
             ) : (
                 <Image 
                     source={require('./send_icon.png')} 
                     style={{ 
-                        ...styles.sendButton, 
-                        opacity: isSendDisabled ? 0.5 : 1 // Adjust opacity based on whether the button is disabled
-                    }} 
+                      ...styles.sendButton, 
+                      tintColor: isSendDisabled ? 'gray' : '#0984e3',
+                      opacity: isSendDisabled ? 0.5 : 1 
+                  }} 
                 />
             )}
         </TouchableOpacity>
@@ -161,7 +185,7 @@ const styles = StyleSheet.create({
   botMessageContainer: {
     alignSelf: 'flex-start',
     marginBottom: screenHeight * 0.015,
-    backgroundColor: '#d1f7d1',
+    backgroundColor: '#74b9ff',
     borderRadius: screenWidth * 0.04,
     overflow: 'hidden',
   },

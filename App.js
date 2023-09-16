@@ -30,12 +30,12 @@ const CatalogButton = ({ title, onPress, containerStyle, textStyle }) => {
 const HomeScreen = ({ navigation }) => {
   return (
     <LinearGradient 
-      colors={['#1abc9c', '#27ae60']}
+      colors={['#0984e3', '#74b9ff']}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
-        <Text style={styles.logoText}>REFLECTO</Text>
-        <Text style={styles.logosubText}>Your introspection companion</Text>
+        <Text style={styles.logoText}>MedChat</Text>
+        <Text style={styles.logosubText}>Always On, Health Chatbot </Text>
         <Image
           source={require('./assets/logo.png')}
           style={styles.image}
@@ -45,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('InputPage')}
         />
           <CatalogButton
-          title="ENTRIES"
+          title="RECORDS"
           onPress={() => navigation.navigate('CatalogPage')}
         />
       </View>
@@ -66,7 +66,7 @@ const App = () => {
         screenOptions={{
           headerBackground: () => (
             <LinearGradient
-              colors={['#1abc9c', '#1abc9c']}
+              colors={['#0984e3', '#0984e3']}
               style={{ flex: 1 }}
             />
           ),
@@ -77,7 +77,7 @@ const App = () => {
     name="CatalogPage"
     component={CatalogPage}
     options={{
-      title: 'Entries',
+      title: 'Records',
       // You can set any specific options for this screen here
     }}
   />
@@ -177,39 +177,43 @@ const App = () => {
             )
           })}
         />
-        <Stack.Screen
-          name="OutputPage"
-          component={OutputPage}
-          options={({ route, navigation }) => ({
-            title: 'Summary',
-            headerLeft: null, // Set headerLeft to null to remove the back button
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert(
-                    'Navigate back?',
-                    'Are you sure you want to go back to the Home page?',
-                    [
-                      {
-                        text: 'Cancel',
-                        style: 'cancel',
-                      },
-                      {
-                        text: 'Yes',
-                        onPress: () => {
-                          navigation.navigate('Home');
-                        },
-                      }
-                    ],
-                    { cancelable: true }
-                  );
-                }}
-              >
-                <Text style={{ color: 'white', paddingHorizontal: 10, fontSize: 16, fontFamily: "Helvetica"}}>Save</Text>
-              </TouchableOpacity>
-            )
-          })}
-        />
+<Stack.Screen
+  name="OutputPage"
+  component={OutputPage}
+  options={({ route, navigation }) => ({
+    title: 'Summary',
+    headerLeft: null,
+    headerRight: () => (
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert(
+              'Navigate back?',
+              'Are you sure you want to go back to the Home page?',
+              [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Yes',
+                  onPress: () => {
+                    navigation.navigate('Home');
+                  },
+                }
+              ],
+              { cancelable: true }
+            );
+          }}
+        >
+          <Text style={{ color: 'white', paddingHorizontal: 10, fontSize: 16, fontFamily: "Helvetica"}}>Save</Text>
+        </TouchableOpacity>
+
+      </View>
+    )
+  })}
+/>
+
 
   <Stack.Screen
     name="SummaryDetail"
@@ -274,7 +278,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: screenWidth * 0.06, // 6% of the screen width for font size
-    color: '#1abc9c', // Black text color
+    color: '#0984e3', // Black text color
     fontFamily: 'Helvetica',
     fontWeight: 'bold',
     paddingVertical: screenHeight * 0.01, // 1% of the screen height for vertical padding
@@ -282,7 +286,7 @@ const styles = StyleSheet.create({
   sub_buttonContainer: {
     backgroundColor: 'white', // White background color
     borderRadius: screenHeight * 0.1, // 10% of the screen height for rounded corners
-    paddingHorizontal: screenWidth * 0.17, // 20% of the screen width for horizontal padding
+    paddingHorizontal: screenWidth * 0.15, // 20% of the screen width for horizontal padding
     paddingVertical: screenHeight * 0.005,
     marginBottom: screenHeight * 0.06 // 2% of the screen height for vertical padding
   },
@@ -307,7 +311,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   submitButtonText: {
-    color: '#1abc9c',
+    color: '#0984e3',
     fontWeight: 'bold',
   },
 });
